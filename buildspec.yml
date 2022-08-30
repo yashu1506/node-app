@@ -8,7 +8,6 @@ phases:
     commands:
       - echo Compiling the Node.js code
       - echo Running unit tests
-      - npm test
   post_build:
     commands:
       - echo Build completed 
