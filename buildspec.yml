@@ -2,15 +2,20 @@ version: 0.2
 phases:
   pre_build:
     commands:
-      - echo Installing source NPM dependencies...
-      - npm install
+      - echo Logging in to Amazon ECR...
+      - aws --version
+      - $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
   build:
     commands:
-      - echo Compiling the Node.js code
-      - echo Running unit tests
+      - echo Build started on `date`
+      - echo building docker image
+      - docker build -t node-app .
+      - docker tag node-app:latest 017690734226.dkr.ecr.ap-south-1.amazonaws.com/node-app:latest
   post_build:
     commands:
-      - echo Build completed 
+      - echo Build completed on `date`
+      - echo Pushing the Docker image...
+      - docker push 017690734226.dkr.ecr.ap-south-1.amazonaws.com/node-app:latest
 artifacts:
   files:
     - '**/*'
